@@ -27,14 +27,19 @@ const pokemonFind = () => {
 
   pokemonToFind.value = '';
 };
+
+const vFocus = {
+  mounted: (el) => el.focus(),
+};
 </script>
 
 <template>
   <div class="flex flex-col items-center p-12">
     <label for="catch" class="font-semibold">Find your Pokemon</label>
     <input
+      v-focus
       v-model="pokemonToFind"
-      @keydown.enter="pokemonFind"
+      @keyup.enter="pokemonFind"
       type="text"
       name="catch"
       id="catch"
