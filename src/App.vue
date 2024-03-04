@@ -39,10 +39,10 @@ const getPokemon = async (pokemonToFind) => {
 
       let stats = [];
 
-      _pokemon.stats.forEach((stat) => {
+      _pokemon.stats.forEach((el) => {
         const _stat = {
-          name: stat.stat.name,
-          value: stat.base_stat,
+          name: el.stat.name,
+          value: el.base_stat,
         };
 
         stats.push(_stat);
