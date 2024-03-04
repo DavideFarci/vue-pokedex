@@ -99,10 +99,6 @@ const removePokemon = (name) => {
   localStorage.setItem('pokemons', JSON.stringify(pokemonsList.value));
 };
 
-const updateList = () => {
-  pokemonsList.value = JSON.parse(localStorage.getItem('pokemons'));
-};
-
 const toggleCatched = () => {
   catched.value = !catched.value;
 };
