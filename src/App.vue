@@ -28,6 +28,7 @@ const getPokemon = async (pokemonToFind) => {
   const searchedPokemon = _searchedPokemon;
 
   if (!searchedPokemon) {
+    pokemon.value = null;
     loader.value = false;
     return;
   } else {
@@ -80,12 +81,18 @@ const getPokemon = async (pokemonToFind) => {
 const catchPokemon = () => {
   if (pokemon.value) {
     const _pokemonsList = JSON.parse(localStorage.getItem('pokemons'));
-    const match = _pokemonsList.find((obj) => obj.id === pokemon.value.id);
-    if (match) {
-      message.value = 'You have already catched this Pokemon';
-      setTimeout(() => {
-        message.value = '';
-      }, 2000);
+    if (_pokemonsList) {
+      const match = _pokemonsList.find((obj) => obj.id === pokemon.value.id);
+      if (match) {
+        message.value = 'You have already catched this Pokemon';
+        setTimeout(() => {
+          message.value = '';
+        }, 2000);
+      } else {
+        pokemonsList.value.push(pokemon.value);
+        localStorage.setItem('pokemons', JSON.stringify(pokemonsList.value));
+        catched.value === false && (catched.value = true);
+      }
     } else {
       pokemonsList.value.push(pokemon.value);
       localStorage.setItem('pokemons', JSON.stringify(pokemonsList.value));
