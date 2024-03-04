@@ -65,11 +65,11 @@ const getPokemon = async (pokemonToFind) => {
     } catch (error) {
       console.log('Errore durante la richiesta: ' + error.message);
       if (error.response.status && error.response.status == 404) {
-        message.value = 'Pokemon non trovato';
+        message.value = 'Pokemon not found';
         loader.value = false;
         pokemon.value = [];
       } else {
-        message.value = 'Qualcosa è andato storto';
+        message.value = 'An error occurred';
         loader.value = false;
         pokemon.value = [];
       }
@@ -77,27 +77,34 @@ const getPokemon = async (pokemonToFind) => {
   }
 };
 
-const toggleCatched = () => {
-  catched.value = !catched.value;
+const catchPokemon = () => {
+  if (pokemon.value) {
+    const _pokemonsList = JSON.parse(localStorage.getItem('pokemons'));
+    const match = _pokemonsList.find((obj) => obj.id === pokemon.value.id);
+    if (match) {
+      message.value = 'You have already catched this Pokemon';
+      setTimeout(() => {
+        message.value = '';
+      }, 2000);
+    } else {
+      pokemonsList.value.push(pokemon.value);
+      localStorage.setItem('pokemons', JSON.stringify(pokemonsList.value));
+      catched.value === false && (catched.value = true);
+    }
+  }
 };
 
-const catchPokemon = () => {
-  const _pokemonsList = JSON.parse(localStorage.getItem('pokemons'));
-  const match = _pokemonsList.find((obj) => obj.id === pokemon.value.id);
-  if (match) {
-    message.value = 'Hai già catturato questo Pokemon';
-    setTimeout(() => {
-      message.value = '';
-    }, 2000);
-  } else {
-    pokemonsList.value.push(pokemon.value);
-    localStorage.setItem('pokemons', JSON.stringify(pokemonsList.value));
-    catched.value === false && (catched.value = true);
-  }
+const removePokemon = (name) => {
+  pokemonsList.value = pokemonsList.value.filter((pok) => pok.name !== name);
+  localStorage.setItem('pokemons', JSON.stringify(pokemonsList.value));
 };
 
 const updateList = () => {
   pokemonsList.value = JSON.parse(localStorage.getItem('pokemons'));
+};
+
+const toggleCatched = () => {
+  catched.value = !catched.value;
 };
 
 watch(thumb, () => {
@@ -133,15 +140,6 @@ watch(thumb, () => {
 
       <!-- dettagli o lista -->
       <div class="py-12 pl-24 pr-14">
-        <!-- <div class="row-span-1 flex items-center justify-center">
-          <button
-            @click="toggleCatched"
-            class="mx-auto rounded-md bg-red-950 px-6 py-1 font-bold"
-          >
-            {{ !catched ? 'Catched Pokemons' : 'Info' }}
-          </button>
-        </div> -->
-
         <PokemonDetails
           v-if="!catched"
           :message="message"
@@ -150,8 +148,9 @@ watch(thumb, () => {
         />
         <AppCatched
           v-else
-          v-on:onGetPokemon="getPokemon"
-          :onUpdateList="updateList"
+          @onGetPokemon="getPokemon"
+          :on-pokemons-list="pokemonsList"
+          @onRemovePokemon="removePokemon"
         />
       </div>
     </div>

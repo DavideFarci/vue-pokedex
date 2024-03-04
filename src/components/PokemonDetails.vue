@@ -61,7 +61,6 @@ defineProps({
   <div
     v-else-if="message && !loader"
     class="border_special h-full border-8 border-red-900 bg-slate-900 p-4"
-    style="border-radius: 9px 9px 40px 9px"
   >
     <h3 class="mt-12 text-center font-semibold uppercase">{{ message }}</h3>
   </div>

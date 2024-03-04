@@ -1,20 +1,10 @@
 <script setup>
 import { ref, defineEmits } from 'vue';
 const { log } = console;
-const emit = defineEmits(['onGetPokemon', 'onUpdateList']);
-
-const pokemonsList = ref(
-  localStorage.getItem('pokemons')
-    ? JSON.parse(localStorage.getItem('pokemons'))
-    : [],
-);
-
-const removePokemon = (name) => {
-  const result = pokemonsList.value.filter((pok) => pok.name !== name);
-  pokemonsList.value = result;
-  localStorage.setItem('pokemons', JSON.stringify(pokemonsList.value));
-  emit('onUpdateList');
-};
+defineProps({
+  onPokemonsList: Array,
+});
+const emit = defineEmits(['onGetPokemon', 'onRemovePokemon']);
 </script>
 
 <template>
@@ -27,7 +17,7 @@ const removePokemon = (name) => {
       </li>
 
       <li
-        v-for="(pokemon, i) in pokemonsList"
+        v-for="(pokemon, i) in onPokemonsList"
         :key="i"
         class="flex justify-between"
       >
@@ -37,7 +27,7 @@ const removePokemon = (name) => {
         >
           {{ pokemon.name }}
         </button>
-        <button @click="removePokemon(pokemon.name)">
+        <button @click="emit('onRemovePokemon', pokemon.name)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
