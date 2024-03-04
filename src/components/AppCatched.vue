@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 const { log } = console;
+const emit = defineEmits(['onGetPokemon', 'onUpdateList']);
 
 const pokemonsList = ref(
   localStorage.getItem('pokemons')
@@ -8,19 +9,23 @@ const pokemonsList = ref(
     : [],
 );
 
-const emitPokemon = defineEmits(['onGetPokemon']);
-
 const removePokemon = (name) => {
   const result = pokemonsList.value.filter((pok) => pok.name !== name);
   pokemonsList.value = result;
   localStorage.setItem('pokemons', JSON.stringify(pokemonsList.value));
-  $emit('onUpdateList');
+  emit('onUpdateList');
 };
 </script>
 
 <template>
   <div class="border_special h-full border-8 border-red-900 bg-slate-900 p-4">
     <ul>
+      <li>
+        <h2 class="mb-2 py-2 text-center text-lg font-bold uppercase">
+          pokemons catched
+        </h2>
+      </li>
+
       <li
         v-for="(pokemon, i) in pokemonsList"
         :key="i"
@@ -28,7 +33,7 @@ const removePokemon = (name) => {
       >
         <button
           class="font-semibold uppercase hover:font-bold"
-          @click="$emit('onGetPokemon', pokemon.name)"
+          @click="emit('onGetPokemon', pokemon.name)"
         >
           {{ pokemon.name }}
         </button>

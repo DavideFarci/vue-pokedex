@@ -49,6 +49,7 @@ const getPokemon = async (pokemonToFind) => {
       });
 
       pokemon.value = {
+        id: _pokemon.id,
         name: _pokemon.forms[0].name,
         type: _pokemon.types[0].type.name,
         height: _pokemon.height,
@@ -81,9 +82,8 @@ const toggleCatched = () => {
 };
 
 const catchPokemon = () => {
-  const match = pokemonsList.value.find(
-    (obj) => obj.name === pokemon.value.name,
-  );
+  const _pokemonsList = JSON.parse(localStorage.getItem('pokemons'));
+  const match = _pokemonsList.find((obj) => obj.id === pokemon.value.id);
   if (match) {
     message.value = 'Hai già catturato questo Pokemon';
     setTimeout(() => {

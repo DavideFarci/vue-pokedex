@@ -2,7 +2,7 @@
 import { ref, defineEmits } from 'vue';
 const { log } = console;
 
-const emit = defineEmits(['findPokemon']);
+const emit = defineEmits(['findPokemon', 'onCatchPokemon', 'onToggleCatched']);
 const pokemonToFind = defineModel();
 const buttons = ref([
   {
@@ -53,7 +53,7 @@ const vFocus = {
             @click="
               button.action === 'pokemonFind'
                 ? pokemonFind()
-                : $emit(button.action)
+                : emit(button.action)
             "
             class="h-12 w-12 cursor-pointer rounded-full border border-b-[5px] border-red-950 bg-red-700 px-2 py-2 text-white transition-all active:translate-x-[1px] active:translate-y-[3px] active:border-b-[2px] active:brightness-90"
           >
