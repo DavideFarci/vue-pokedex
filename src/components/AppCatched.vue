@@ -14,15 +14,12 @@ const removePokemon = (name) => {
   const result = pokemonsList.value.filter((pok) => pok.name !== name);
   pokemonsList.value = result;
   localStorage.setItem('pokemons', JSON.stringify(pokemonsList.value));
-  $emit('onUpdateList', pokemonsList.value);
+  $emit('onUpdateList');
 };
 </script>
 
 <template>
-  <div
-    class="mx-auto h-full w-3/4 bg-slate-900 p-4 text-white"
-    style="border-radius: 9px 9px 40px 9px"
-  >
+  <div class="border_special h-full border-8 border-red-900 bg-slate-900 p-4">
     <ul>
       <li
         v-for="(pokemon, i) in pokemonsList"
